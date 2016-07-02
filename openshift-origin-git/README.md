@@ -10,7 +10,7 @@ You can reinstall this package at any time to build binaries based on the latest
 
 #### Core files
 
-These files are the core of openshift-origin-git package for arch linux.
+These files are the core of openshift-origin-git package for Arch Linux.
 
 - PKGBUILD
 - install.sh
@@ -71,7 +71,8 @@ config.sh
 
 #### Dependencies
 
-Docker
+##### Docker
+
 This package depends on docker package.
 docker.service should be enabled and started before running openshift origin cluster.
 You have to update docker.service configuration file (/etc/systemd/system/multi-user.target.wants/docker.service) to enable unsecured embedded docker registry.
@@ -80,13 +81,12 @@ ExecStart=/usr/bin/docker daemon -s zfs --storage-opt zfs.fsname=ZFS0/docker --i
 
 #### Recommended packages
 
-- lvm2: [LVM](https://wiki.archlinux.org/index.php/LVM): create logical volumes to be used by zfs .
+- lvm2: [LVM](https://wiki.archlinux.org/index.php/LVM): create logical volumes to be used by ZFS .
 - lxd: [LXD](https://wiki.archlinux.org/index.php/LXD): create linux containers .
-- zfs-dkms: [ZFS](https://wiki.archlinux.org/index.php/ZFS) support .
-  Then you can enable zfs backend for Docker and LXD.
+- zfs-dkms: [ZFS](https://wiki.archlinux.org/index.php/ZFS) support . Enable ZFS backend for Docker and LXD .
 
 #### Custom kernel
 
 "Due to security concerns, the default Arch kernel does not ship with the ability to run containers as an unprivileged user. LXD however needs this ability to run. You can either build a kernel yourself that has CONFIG_USER_NS enabled, or use linux-user-ns-enabled from the AUR."
 
-It's easy to build a [custom kernel](https://wiki.archlinux.org/index.php/Kernels/Arch_Build_System).
+It's easy to build a [custom kernel](https://wiki.archlinux.org/index.php/Kernels/Arch_Build_System) .
