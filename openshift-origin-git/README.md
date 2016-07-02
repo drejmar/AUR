@@ -1,28 +1,20 @@
-### Files
+## [openshift-origin-git](https://aur.archlinux.org/packages/openshift-origin-git/) is a package for [Arch Linux](https://www.archlinux.org/).
 
-These files are essential part of openshift-origin-git package for arch linux.
+It downloads source code from official [OpenShift Origin](https://docs.openshift.org/latest) [GitHub repository](https://github.com/openshift/origin).
+
+Install script compiles source code, installs two binaries (oc, openshift) and six symlinks (kubectl, kube-apiserver, kube-controller-manager, kubelet, kube-proxy, kube-scheduler, oadm) into /usr/bin/ .
+
+I will release this package upon each upstream release.
+You can reinstall this package at any time to build binaries based on the latest commit (yaourt --sync openshift-origin-git).
+
+
+#### Core files
+
+These files are the core of openshift-origin-git package for arch linux.
 
 - PKGBUILD
 - install.sh
 - .SRCINFO
-
-These files are optional scripts. They let you run a cluster once you have installed the package.
-
-- config.sh
-- 0.read.config.sh
-- 1.install.cluster.sh
-- 2.install.certificate.sh
-- 3.start.cluster.sh
-- 4.stop.cluster.sh
-- 5.delete.cluster.sh
-
-### Dependencies
-
-This package depends on docker package.
-docker.service should be enabled and started before running openshift origin cluster.
-You have to update docker configuration file to enable unsecured embedded docker registry.
-
-### File descriptions
 
 PKGBUILD
 - Package build specification.
@@ -35,6 +27,20 @@ install.sh
 
 .SRCINFO
 - Package metadata.
+
+
+#### Optional scripts
+
+These files are optional scripts. They let you run a cluster once you have installed the package.
+You should probably copy them to your path (/usr/local/bin).
+
+- config.sh
+- 0.read.config.sh
+- 1.install.cluster.sh
+- 2.install.certificate.sh
+- 3.start.cluster.sh
+- 4.stop.cluster.sh
+- 5.delete.cluster.sh
 
 config.sh
 - Sample configuration file. You can copy or edit it to your liking.
@@ -61,3 +67,26 @@ config.sh
 5.delete.cluster.sh
 - Delete a cluster and all it's data.
 - Usage: 5.delete.cluster.sh config.sh
+
+
+#### Dependencies
+
+Docker
+This package depends on docker package.
+docker.service should be enabled and started before running openshift origin cluster.
+You have to update docker.service configuration file (/etc/systemd/system/multi-user.target.wants/docker.service) to enable unsecured embedded docker registry.
+
+ExecStart=/usr/bin/docker daemon -s zfs --storage-opt zfs.fsname=ZFS0/docker --insecure-registry 172.30.0.0/16
+
+#### Recommended packages
+
+- lvm2: [LVM](https://wiki.archlinux.org/index.php/LVM): create logical volumes to be used by zfs .
+- lxd: [LXD](https://wiki.archlinux.org/index.php/LXD): create linux containers .
+- zfs-dkms: [ZFS](https://wiki.archlinux.org/index.php/ZFS) support .
+  Then you can enable zfs backend for Docker and LXD.
+
+#### Custom kernel
+
+"Due to security concerns, the default Arch kernel does not ship with the ability to run containers as an unprivileged user. LXD however needs this ability to run. You can either build a kernel yourself that has CONFIG_USER_NS enabled, or use linux-user-ns-enabled from the AUR."
+
+It's easy to build a [custom kernel](https://wiki.archlinux.org/index.php/Kernels/Arch_Build_System).
